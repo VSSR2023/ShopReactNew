@@ -1,0 +1,24 @@
+.categories{
+    text-align: center;
+
+    div{
+        display: inline-block;
+        background: rgb(214, 221, 208);
+        border-radius: 50px;
+        padding: 10px 20px;
+        margin-bottom: 25px;
+        margin-right: 15px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 500ms ease;
+        font-size: 20px;
+        font-weight: 600;
+        text-align: center;
+
+
+        &:hover{
+            border-color: #dde8e7;
+            transform: scale(1.1);
+        }
+    }
+}

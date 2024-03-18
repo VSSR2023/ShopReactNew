@@ -1,9 +1,11 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Items from "./components/Items";
 import "./index.scss";
+import Categories from "./components/Categories"
+import ShowFullItem from "./components/ShowFullItem"
 
 export default function App() {
 
@@ -90,11 +92,40 @@ export default function App() {
     },
     
   ])
+  const addToOrder=(item)=>{
+    if(!orders.some((el)=>el.id===item.id)){
+     setOrders([...orders,item]);
+    }
+   // добавление товара без оганичений количества товара 
+    //setOrders([...orders,item]);
+  }
+  const [orders,setOrders]=useState([]);
+  const [currentItems,setCurrentItems]=useState([]);
+  const [showFullItem, setShowFullItem]=useState(false);
+  const [fullItem,setFullItem]=useState({});
+  
+  useEffect(()=>{
+    setCurrentItems(items);
+  },[items]);
 
+  const chooseCategory = (category)=>{
+    if(category=="all"){
+      setCurrentItems(items);
+    }
+    else{
+      setCurrentItems(items.filter((el)=>el.category===category));
+    }
+  }
+  const onShowItem = (item) =>{
+    setFullItem(item);
+    setShowFullItem(!showFullItem);
+  }
   return (
     <div className="wrapper">
       <Header />
-      <Items allItems={items}/>
+      <Categories chooseCategory={chooseCategory}/>
+      <Items allItems={currentItems}/>
+      {showFullItem && <ShowFullItem onShowItem={onShowItem} onAdd={addToOrder} item={fullItem}/>}
       <Footer />
     </div>
   );
