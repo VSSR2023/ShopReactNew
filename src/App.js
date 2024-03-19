@@ -91,7 +91,8 @@ export default function App() {
       price:'750'
     },
     
-  ])
+  ]);
+  
   const addToOrder=(item)=>{
     if(!orders.some((el)=>el.id===item.id)){
      setOrders([...orders,item]);
@@ -126,6 +127,8 @@ export default function App() {
       <Categories chooseCategory={chooseCategory}/>
       <Items allItems={currentItems}/>
       {showFullItem && <ShowFullItem onShowItem={onShowItem} onAdd={addToOrder} item={fullItem}/>}
+      <Header orders={orders}/>
+      <Items allItems={items} onAdd={addToOrder}/>
       <Footer />
     </div>
   );
