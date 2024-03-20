@@ -1,11 +1,13 @@
 import React from "react";
-import { useState, useEffect} from "react";
+import { useState, useEffect, createContext, useContext} from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Items from "./components/Items";
 import "./index.scss";
 import Categories from "./components/Categories"
 import ShowFullItem from "./components/ShowFullItem"
+
+const AppContext = createContext();
 
 export default function App() {
 
@@ -92,46 +94,68 @@ export default function App() {
     },
     
   ]);
+  const [orders,setOrders]=useState([
+  ]);
+    const [currentItems,setCurrentItems]=useState([]);
+    const [showFullItem,setShowFullItem]=useState(false);
+    const [fullItem,setFullItem]=useState({});
   
-  const addToOrder=(item)=>{
-    if(!orders.some((el)=>el.id===item.id)){
-     setOrders([...orders,item]);
-    }
-   // добавление товара без оганичений количества товара 
-    //setOrders([...orders,item]);
-  }
-  const [orders,setOrders]=useState([]);
-  const [currentItems,setCurrentItems]=useState([]);
-  const [showFullItem, setShowFullItem]=useState(false);
-  const [fullItem,setFullItem]=useState({});
-  
-  useEffect(()=>{
-    setCurrentItems(items);
-  },[items]);
-
-  const chooseCategory = (category)=>{
-    if(category=="all"){
+    useEffect(()=>{
       setCurrentItems(items);
+    },[items]);
+  
+    const deleteOrder = (id) =>{
+      setOrders(orders.filter((el)=> el.id!==id));
     }
-    else{
-      setCurrentItems(items.filter((el)=>el.category===category));
+  
+    const addToOrder=(item)=>{
+      if(!orders.some((el)=>el.id===item.id)){
+        setOrders([...orders,item]);
+      }//добавление товара, но одного типа
+  
+      //setOrders([...orders,item]); без if неограниченное количество товаров одного типа
     }
+  
+    const chooseCategory = (category)=>{
+      if(category==="all"){
+        setCurrentItems(items);
+      }
+      else{
+        setCurrentItems(items.filter((el)=>el.category===category));
+      }
+    }
+  
+    const onShowItem = (item) =>{
+      setFullItem(item);
+      setShowFullItem(!showFullItem);
+    }
+  
+    return (
+      <AppContext.Provider
+        value={
+          {
+            items,
+            setItems,
+            orders,
+            setOrders,
+            currentItems,
+            setCurrentItems,
+            ShowFullItem,
+            setFullItem,
+            deleteOrder,
+            addToOrder,
+            chooseCategory,
+            onShowItem,
+          }}
+        
+      >
+       <div className="wrapper">
+         <Header/>
+         <Categories />
+         <Items />
+         {showFullItem && <ShowFullItem />}
+        <Footer />
+      </div>
+      </AppContext.Provider>
+    );
   }
-  const onShowItem = (item) =>{
-    setFullItem(item);
-    setShowFullItem(!showFullItem);
-  }
-  return (
-    <div className="wrapper">
-      <Header />
-      <Categories chooseCategory={chooseCategory}/>
-      <Items allItems={currentItems}/>
-      {showFullItem && <ShowFullItem onShowItem={onShowItem} onAdd={addToOrder} item={fullItem}/>}
-      <Header orders={orders}/>
-      <Items allItems={items} onAdd={addToOrder}/>
-      <Footer />
-    </div>
-  );
-}
-
-

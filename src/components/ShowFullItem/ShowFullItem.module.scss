@@ -36,6 +36,7 @@
             width: 100%;
             border-radius: 10px;
             transition: transform 500ms ease;
+            cursor: pointer;
 
             &:hover{
                 transition: scale(1.05);
