@@ -1,0 +1,40 @@
+.item{
+    width: 100%;
+    float: left;
+    margin-bottom: 20px;
+
+
+    img{
+        width: 70px;
+        float: left;
+        margin-right: 20px;
+        border-radius: 5px;
+    }
+
+    h2{
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    b{
+        color: rgba(119, 44, 9);
+        font-weight: 600;
+        font-size: 20px;
+
+    }
+
+    .deleteIcon{
+        color: rgba(119, 44, 9);
+        float: right;
+        position: relative;
+        top: -25px;
+        font-size: 20px;
+        cursor: pointer;
+        transition: color,transform 1000ms ease ;
+
+
+        &:hover{
+            color: rgb(224, 15, 15);
+            transform: scale(1.5);
+        }
+    }
+}
